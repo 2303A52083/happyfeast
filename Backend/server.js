@@ -39,7 +39,12 @@ app.get('/', (req, res) => {
 });
 
 
-// To Run on port 4000
-app.listen(port,()=>{
-    console.log(`Server Running on http://localhost:${port}`)
-})
+// To Run on port 4000 (Local Dev Only)
+if (process.env.NODE_ENV !== 'production') {
+    app.listen(port, () => {
+        console.log(`Server Running on http://localhost:${port}`)
+    })
+}
+
+// Export the app instance for Vercel functions
+export default app;
