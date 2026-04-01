@@ -4,11 +4,13 @@ import axios from "axios";
 
 const StoreContextProvider = (props) => {
   const [cartItem, setCartItems] = useState({});
-  const URl = import.meta.env.VITE_BACKEND_URL || "http://localhost:4000"
-  const [token , setToken] = useState("")
-  const [food_list,setFoodList] = useState([])
+  const rawURl = import.meta.env.VITE_BACKEND_URL || "http://localhost:4000";
+  const URl = rawURl.replace(/\/$/, "");
+  console.log("Connecting to Backend at:", URl);
+  const [token, setToken] = useState("")
+  const [food_list, setFoodList] = useState([])
 
-  const addToCart =  async (itemId) => {
+  const addToCart = async (itemId) => {
     if (!cartItem[itemId]) {
       setCartItems((prev) => ({ ...prev, [itemId]: 1 }));
     } else {
@@ -16,7 +18,7 @@ const StoreContextProvider = (props) => {
     }
 
     if (token) {
-      await axios.post(URl+"/api/cart/add", {itemId}, {headers: {token}})
+      await axios.post(URl + "/api/cart/add", { itemId }, { headers: { token } })
     }
 
   };
@@ -24,7 +26,7 @@ const StoreContextProvider = (props) => {
   const removeFromCart = async (itemId) => {
     setCartItems((prev) => ({ ...prev, [itemId]: prev[itemId] - 1 }));
     if (token) {
-      await axios.post(URl+"/api/cart/remove", {itemId}, {headers: {token}})
+      await axios.post(URl + "/api/cart/remove", { itemId }, { headers: { token } })
     }
   };
 
@@ -39,27 +41,32 @@ const StoreContextProvider = (props) => {
     return totalAmount;
   };
 
-  const fetchFoodList = async ()=>{
-    const response = await axios.get(URl+"/api/food/list")
-    setFoodList(response.data.data)
+  const fetchFoodList = async () => {
+    try {
+      const response = await axios.get(URl + "/api/food/list")
+      setFoodList(response.data.data)
+    } catch (error) {
+      console.error("Connectivity Check Failed:", error.message);
+      console.error("Attempted URL:", URl + "/api/food/list");
+    }
   }
 
   const loadcartData = async (token) => {
-    const response = await axios.post(URl+"/api/cart/get",{}, {headers: {token}})
+    const response = await axios.post(URl + "/api/cart/get", {}, { headers: { token } })
     setCartItems(response.data.cartData)
   }
 
   // To not logout When refreshed
-  useEffect(()=>{
-    async function loaddata () {
+  useEffect(() => {
+    async function loaddata() {
       await fetchFoodList()
-      if(localStorage.getItem("token")){
+      if (localStorage.getItem("token")) {
         setToken(localStorage.getItem("token"))
         await loadcartData(localStorage.getItem("token"));
       }
     }
     loaddata()
-  },[])
+  }, [])
 
   const contextValue = {
     food_list,
