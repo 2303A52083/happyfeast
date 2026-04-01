@@ -13,13 +13,16 @@ export const connectDB = async () => {
     }
 
     try {
-        const db = await mongoose.connect(process.env.MONGO_DBurl, {
-            serverSelectionTimeoutMS: 5000, // Timeout after 5 seconds instead of 30
-        });
-        isConnected = !!db.connections[0].readyState;
+        console.log("Attempting to connect to MongoDB...");
+        const db = await mongoose.connect(process.env.MONGO_DBurl);
+        isConnected = true;
         console.log("DB Connected Successfully");
     } catch (error) {
         console.error("DB Connection Failed:", error.message);
+        // Log a more helpful error for the user
+        if (error.message.includes("ETIMEOUT")) {
+            console.error("HINT: Check if 0.0.0.0/0 is really active in Atlas.");
+        }
     }
 }
 
