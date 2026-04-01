@@ -45,14 +45,23 @@ app.use("/api/user",userRouter)
 app.use('/api/cart', cartRouter)
 app.use('/api/order', orderRouter)
 
+import mongoose from "mongoose";
+
 // Http Requests
 app.get('/', (req, res) => {
-    res.send("API Working")
+    const dbStatus = mongoose.connection.readyState === 1 ? "CONNECTED" : "DISCONNECTED";
+    res.send(`API Working - Database Status: ${dbStatus}`)
 });
 
 // Health check endpoint (for connectivity test)
 app.get('/api/health', (req, res) => {
-    res.json({ success: true, status: "Healthy", environment: process.env.VERCEL ? "Vercel" : "Local" })
+    const dbStatus = mongoose.connection.readyState === 1 ? "CONNECTED" : "DISCONNECTED";
+    res.json({ 
+        success: true, 
+        status: "Healthy", 
+        database: dbStatus,
+        environment: process.env.VERCEL ? "Vercel" : "Local" 
+    })
 });
 
 // To Run on port (Local Dev Only)
