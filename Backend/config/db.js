@@ -1,4 +1,4 @@
-import mongoose, { mongo } from "mongoose";
+import mongoose from "mongoose";
 
 let isConnected = false;
 export let lastDbError = null;
@@ -26,4 +26,3 @@ export const connectDB = async () => {
         console.error("DB Connection Failed:", error.message);
     }
 }
-

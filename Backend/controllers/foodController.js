@@ -37,7 +37,6 @@ const removeFood = async (req, res) => {
         const food = await foodModel.findById(req.body.id);
         
         // Extract public_id from Cloudinary URL to delete it
-        // Example URL: https://res.cloudinary.com/dkgo1xrfx/image/upload/v17.../food_items/xxx.jpg
         const publicId = food.image.split('/').pop().split('.')[0];
         await cloudinary.uploader.destroy(`food_items/${publicId}`);
 
@@ -49,4 +48,4 @@ const removeFood = async (req, res) => {
     }
 }
 
-export {addFood, listfood, removeFood}
+export { addFood, listfood, removeFood }
