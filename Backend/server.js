@@ -39,7 +39,8 @@ connectDB().then(() => {
 
 // API Endpoint 
 app.use("/api/food",foodRouter)
-app.use("/images",express.static('uploads'))
+// Use /tmp for static images on Vercel, else 'uploads'
+app.use("/images", express.static(process.env.VERCEL ? "/tmp" : "uploads"))
 app.use("/api/user",userRouter)
 app.use('/api/cart', cartRouter)
 app.use('/api/order', orderRouter)
@@ -49,8 +50,14 @@ app.get('/', (req, res) => {
     res.send("API Working")
 });
 
-// To Run on port 4000 (Local Dev Only)
-if (process.env.NODE_ENV !== 'production') {
+// Health check endpoint (for connectivity test)
+app.get('/api/health', (req, res) => {
+    res.json({ success: true, status: "Healthy", environment: process.env.VERCEL ? "Vercel" : "Local" })
+});
+
+// To Run on port (Local Dev Only)
+// On Vercel, we MUST NOT call app.listen()
+if (process.env.NODE_ENV !== 'production' && !process.env.VERCEL) {
     app.listen(port, () => {
         console.log(`Server Running on http://localhost:${port}`)
     })

@@ -7,7 +7,10 @@ const foodRouter = express.Router();
 
 //image Storage Engine
 const storage = multer.diskStorage({
-    destination: "uploads",
+    destination: (req, file, cb) => {
+        // Use /tmp on Vercel, else 'uploads'
+        return cb(null, process.env.VERCEL ? "/tmp" : "uploads")
+    },
     filename: (req,file,cb)=>{
         return cb(null, `${Date.now()}${file.originalname}`)
     }
