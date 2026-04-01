@@ -44,10 +44,12 @@ const StoreContextProvider = (props) => {
   const fetchFoodList = async () => {
     try {
       const response = await axios.get(URl + "/api/food/list")
-      setFoodList(response.data.data)
+      // Fallback to empty array if response.data.data is missing
+      setFoodList(response.data.data || [])
     } catch (error) {
       console.error("Connectivity Check Failed:", error.message);
       console.error("Attempted URL:", URl + "/api/food/list");
+      setFoodList([]); // Ensure it is an array even on failure
     }
   }
 

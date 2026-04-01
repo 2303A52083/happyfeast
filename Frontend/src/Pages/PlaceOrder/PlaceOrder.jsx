@@ -75,7 +75,7 @@ const PlaceOrder = () => {
   const placeOrder = async (event) => {
     event.preventDefault();
     let orderItems = [];
-    food_list.map((item) => {
+    food_list?.map((item) => {
       if (cartItem[item._id] > 0) {
         let itemInfo = { ...item };
         itemInfo["quantity"] = cartItem[item._id]
