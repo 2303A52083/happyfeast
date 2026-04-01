@@ -6,8 +6,12 @@ import userRouter from "./routes/userRoute.js";
 import 'dotenv/config'
 import cartRouter from "./routes/cartRoute.js";
 import orderRouter from "./routes/orderRoute.js";
+import fs from "fs";
 
-
+// Create uploads directory if it doesn't exist
+if (!fs.existsSync("uploads")) {
+    fs.mkdirSync("uploads");
+}
 
 // app configurations
 const app = express();
@@ -22,9 +26,12 @@ app.use(cors({
 })) // To access backend from any frontend
 
 
-// DB Connection 
-console.log("Connecting to Database...")
-connectDB();
+// DB Connection with Error Handling
+connectDB().then(() => {
+    console.log("Database connected successfully");
+}).catch((err) => {
+    console.error("Database connection failed:", err.message);
+});
 
 // API Endpoint 
 app.use("/api/food",foodRouter)
@@ -37,7 +44,6 @@ app.use('/api/order', orderRouter)
 app.get('/', (req, res) => {
     res.send("API Working")
 });
-
 
 // To Run on port 4000 (Local Dev Only)
 if (process.env.NODE_ENV !== 'production') {
