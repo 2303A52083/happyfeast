@@ -9,8 +9,12 @@ import orderRouter from "./routes/orderRoute.js";
 import fs from "fs";
 
 // Create uploads directory if it doesn't exist
-if (!fs.existsSync("uploads")) {
-    fs.mkdirSync("uploads");
+try {
+    if (!fs.existsSync("uploads")) {
+        fs.mkdirSync("uploads");
+    }
+} catch (err) {
+    console.error("Warning: Could not create uploads directory:", err.message);
 }
 
 // app configurations
