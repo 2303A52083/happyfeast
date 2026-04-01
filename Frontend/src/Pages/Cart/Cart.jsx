@@ -28,7 +28,7 @@ const Cart = () => {
                 <div
                   className={`${style.CartItemsTitle} ${style.CartItemsItem}`}
                 >
-                  <img src={item.image.startsWith("http")?item.image:URl+"/images/"+item.image} alt="" />
+                  <img src={item.image.includes("http")?item.image:URl+"/images/"+item.image} alt="" />
                   <p>{item.name}</p>
                   <p>₹{item.price}</p>
                   <p>{cartItem[item._id]}</p>

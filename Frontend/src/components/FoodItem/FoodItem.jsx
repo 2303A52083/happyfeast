@@ -11,7 +11,7 @@ const FoodItem = ({id,name,price,description,image}) => {
   return (
     <div className={style.FoodItem}>
         <div className={style.FoodItemImageContainer}>
-            <img className={style.FoodItemImage} src={image.startsWith("http")?image:URl+"/images/"+image} alt="" />
+            <img className={style.FoodItemImage} src={image.includes("http")?image:URl+"/images/"+image} alt="" />
             {
                 !cartItem[id]
                 ?<img className={style.add} onClick={()=>addToCart(id)} src={assets.add_icon_white} alt="" />
