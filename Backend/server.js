@@ -55,9 +55,10 @@ import { lastDbError } from "./config/db.js";
 
 // Http Requests
 app.get('/', (req, res) => {
-    const dbStatus = mongoose.connection.readyState === 1 ? "CONNECTED" : "DISCONNECTED";
+    const states = ["DISCONNECTED", "CONNECTED", "CONNECTING", "DISCONNECTING"];
+    const currentState = states[mongoose.connection.readyState] || "UNKNOWN";
     const errorMsg = lastDbError ? ` | Detailed Error: ${lastDbError}` : "";
-    res.send(`API Working - Database Status: ${dbStatus}${errorMsg}`)
+    res.send(`API Status: Working | DB Version: 3.0 | DB State: ${currentState}${errorMsg}`)
 });
 
 // Health check endpoint (for connectivity test)
