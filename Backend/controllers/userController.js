@@ -1,13 +1,9 @@
-// Login and Sign in logic
-
 import userModel from "../models/userModel.js";
 import jwt from "jsonwebtoken"
 import bcrypt from "bcryptjs"
 import validator from "validator"
 
-
 // Login user
-
 const loginUser = async (req, res) => {
     const { email, password } = req.body;
     try {
@@ -25,7 +21,6 @@ const loginUser = async (req, res) => {
         const token = createToken(user._id)
         res.json({ success: true, token })
 
-
     } catch (error) {
         console.log("Login Error:", error)
         res.json({ success: false, message: error.message })
@@ -33,7 +28,6 @@ const loginUser = async (req, res) => {
 }
 
 // Register User
-
 const createToken = (id) => {
     return jwt.sign({ id }, process.env.JWT_SECRET)
 }
@@ -57,7 +51,7 @@ const registerUser = async (req, res) => {
         }
 
         // Hashing User password using bcrypt
-        const salt = await bcrypt.genSalt(10) //Can be set from 5 to 15 , higher the number higher the hashing 
+        const salt = await bcrypt.genSalt(10)
         const hashedPassword = await bcrypt.hash(password, salt)
 
         const newUser = new userModel({

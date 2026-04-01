@@ -1,28 +1,29 @@
 import mongoose, { mongo } from "mongoose";
 
 let isConnected = false;
+export let lastDbError = null;
 
 export const connectDB = async () => {
-    if (isConnected) {
+    if (mongoose.connection.readyState >= 1) {
+        isConnected = true;
         return;
     }
 
     if (!process.env.MONGO_DBurl) {
-        console.error("CRITICAL ERROR: MONGO_DBurl is not defined in environment variables.");
+        lastDbError = "MONGO_DBurl is missing from Vercel settings.";
+        console.error(lastDbError);
         return;
     }
 
     try {
         console.log("Attempting to connect to MongoDB...");
-        const db = await mongoose.connect(process.env.MONGO_DBurl);
+        await mongoose.connect(process.env.MONGO_DBurl);
         isConnected = true;
+        lastDbError = null;
         console.log("DB Connected Successfully");
     } catch (error) {
+        lastDbError = error.message;
         console.error("DB Connection Failed:", error.message);
-        // Log a more helpful error for the user
-        if (error.message.includes("ETIMEOUT")) {
-            console.error("HINT: Check if 0.0.0.0/0 is really active in Atlas.");
-        }
     }
 }
 

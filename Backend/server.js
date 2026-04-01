@@ -51,11 +51,13 @@ app.use('/api/cart', cartRouter)
 app.use('/api/order', orderRouter)
 
 import mongoose from "mongoose";
+import { lastDbError } from "./config/db.js";
 
 // Http Requests
 app.get('/', (req, res) => {
     const dbStatus = mongoose.connection.readyState === 1 ? "CONNECTED" : "DISCONNECTED";
-    res.send(`API Working - Database Status: ${dbStatus}`)
+    const errorMsg = lastDbError ? ` | Detailed Error: ${lastDbError}` : "";
+    res.send(`API Working - Database Status: ${dbStatus}${errorMsg}`)
 });
 
 // Health check endpoint (for connectivity test)
