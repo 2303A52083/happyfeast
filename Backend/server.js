@@ -37,7 +37,12 @@ connectDB().then(() => {
     console.error("Database connection failed:", err.message);
 });
 
-// API Endpoint 
+// API Endpoints
+app.use(async (req, res, next) => {
+    await connectDB();
+    next();
+});
+
 app.use("/api/food",foodRouter)
 // Use /tmp for static images on Vercel, else 'uploads'
 app.use("/images", express.static(process.env.VERCEL ? "/tmp" : "uploads"))
