@@ -1,11 +1,15 @@
 import React from 'react'
 import './Navbar.css'
-import {assets } from '../../assets/assets'
+
+
 
 const Navbar = () => {
   return (
     <div className='Navbar'>
-      <img className='logo' src={assets.logo} alt="HappyFeast Admin"  />
+      <div className='logo-text'>
+        <span className='happy'>Happy</span>
+        <span className='feast'>Feast</span>
+      </div>
     </div>
   )
 }

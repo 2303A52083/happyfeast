@@ -5,8 +5,21 @@
     padding: 8px 4%;
 }
 
-.Navbar .logo{
-    width: max(17%, 80px );
+.Navbar .logo-text {
+    font-size: 32px;
+    font-weight: 800;
+    font-family: 'Outfit', 'Inter', sans-serif;
+    letter-spacing: -1px;
+    cursor: pointer;
+    user-select: none;
+}
+
+.Navbar .logo-text .happy {
+    color: #edff00; /* Vibrant yellow */
+}
+
+.Navbar .logo-text .feast {
+    color: #ffffff; /* White */
 }
 
 .Navbar .profile{
