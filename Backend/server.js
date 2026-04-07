@@ -25,11 +25,7 @@ const port = process.env.PORT || 4000;
 
 //middleware
 app.use(express.json()) // For parsing json files coming to backend
-app.use(cors({
-    origin: "*",
-    methods: ["GET", "POST", "PUT", "DELETE"],
-    allowedHeaders: ["Content-Type", "token"]
-})) // To access backend from any frontend
+app.use(cors()) // To access backend from any frontend
 
 
 // DB Connection Middleware for Serverless
