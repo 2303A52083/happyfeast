@@ -60,16 +60,16 @@ const Orders = ({ URl }) => {
               </p>
               <p className='order-item-name'>
                 {
-                  order.address.firstName + " " + order.address.lastName
+                  order.address ? order.address.firstName + " " + order.address.lastName : "Unknown User"
                 }
               </p>
               <div className="order-item-address">
-                <p>{order.address.street+ ","}</p>
-                <p>{order.address.city+ ", "+order.address.state+", "+order.address.country+", "+order.address.zipcode}</p>
+                <p>{order.address ? order.address.street + "," : "No Address"}</p>
+                <p>{order.address ? order.address.city + ", " + order.address.state + ", " + order.address.country + ", " + order.address.zipcode : ""}</p>
               </div>
-              <p className="order-item-phone">{order.address.phone}</p>
+              <p className="order-item-phone">{order.address?.phone || "No Phone"}</p>
             </div>
-            <p>Items : {order.items.length}</p>
+            <p>Items : {order.items ? order.items.length : 0}</p>
             <p>₹{order.amount}</p>
             <select onChange={(event)=>{statusHandler(event,order._id)}} value={order.status}>
              <option value="Food is Getting Ready!">Food is Getting Ready!</option>
