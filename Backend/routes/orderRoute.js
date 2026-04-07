@@ -22,8 +22,8 @@ orderRouter.post('/userorders', authMiddleware, userOrders)
 // ✅ Admin - Get all orders
 orderRouter.get('/list', listOrders)
 
-// 🔥 FIXED: Update Order Status
-orderRouter.put('/:id', updateStatus)
+// ✅ Admin - Update Order Status
+orderRouter.post('/status', updateStatus)
 
 export default orderRouter
 

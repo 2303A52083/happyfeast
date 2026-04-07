@@ -111,11 +111,10 @@ const listOrders = async (req, res) => {
 // ✅ Update Order Status (FIXED)
 const updateStatus = async (req, res) => {
   try {
-    const { id } = req.params;
-    const { status } = req.body;
+    const { orderId, status } = req.body;
 
     const updatedOrder = await orderModel.findByIdAndUpdate(
-      id,
+      orderId,
       { status },
       { new: true }
     );
