@@ -22,21 +22,27 @@ try {
 const app = express();
 const port = process.env.PORT || 4000;
 
-//middleware
-app.use(express.json()) // For parsing json files coming to backend
-
-// 🛡️ MANUAL CORS HANDLER (For Vercel Stability)
+// 🚀 ULTIMATE CORS HANDLER (ASAP FIX)
 app.use((req, res, next) => {
-    res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS, PATCH");
-    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, token, authorization");
-    
-    // Handle Preflight OPTIONS request
+    const origin = req.headers.origin;
+    res.setHeader("Access-Control-Allow-Origin", origin || "*");
+    res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS, PATCH");
+    res.setHeader("Access-Control-Allow-Headers", "Content-Type, token, authorization, X-Requested-With, Accept");
+    res.setHeader("Access-Control-Allow-Credentials", "true");
+
     if (req.method === "OPTIONS") {
-        return res.status(200).json({});
+        return res.status(200).end();
     }
     next();
 });
+
+// Heartbeat for connectivity check
+app.get("/api/ping", (req, res) => {
+    res.status(200).json({ success: true, message: "Pong! API is reachable." });
+});
+
+//middleware
+app.use(express.json()) // For parsing json files coming to backend
 
 
 // DB Connection Middleware for Serverless
