@@ -1,4 +1,5 @@
 import express from "express";
+import adminRouter from "./routes/adminRoutes.js";
 import cors from "cors"
 import { connectDB, lastDbError } from "./config/db.js";
 import foodRouter from "./routes/foodRoute.js";
@@ -44,6 +45,7 @@ app.use("/images", express.static(process.env.VERCEL ? "/tmp" : "uploads"))
 app.use("/api/user",userRouter)
 app.use('/api/cart', cartRouter)
 app.use('/api/order', orderRouter)
+app.use('/api/admin', adminRouter)
 
 // Http Requests
 app.get('/', (req, res) => {
