@@ -1,5 +1,5 @@
 import express from "express";
-import adminRouter from "./routes/adminRoutes.js";
+import adminRouter from "./routes/adminroutes.js";
 import { connectDB, lastDbError } from "./config/db.js";
 import foodRouter from "./routes/foodRoute.js";
 import userRouter from "./routes/userRoute.js";
