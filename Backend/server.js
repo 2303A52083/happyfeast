@@ -1,6 +1,5 @@
 import express from "express";
 import adminRouter from "./routes/adminRoutes.js";
-import cors from "cors"
 import { connectDB, lastDbError } from "./config/db.js";
 import foodRouter from "./routes/foodRoute.js";
 import userRouter from "./routes/userRoute.js";
@@ -25,7 +24,19 @@ const port = process.env.PORT || 4000;
 
 //middleware
 app.use(express.json()) // For parsing json files coming to backend
-app.use(cors()) // To access backend from any frontend
+
+// 🛡️ MANUAL CORS HANDLER (For Vercel Stability)
+app.use((req, res, next) => {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS, PATCH");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, token, authorization");
+    
+    // Handle Preflight OPTIONS request
+    if (req.method === "OPTIONS") {
+        return res.status(200).json({});
+    }
+    next();
+});
 
 
 // DB Connection Middleware for Serverless
